@@ -48603,7 +48603,7 @@ if (token) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-throw new Error("Module build failed (from ./node_modules/vue-loader/lib/index.js):\nTypeError: Cannot read properties of undefined (reading 'parseComponent')\n    at parse (/Users/trungs_macos/Desktop/Workspace/Laravel_8/laravel/node_modules/@vue/component-compiler-utils/dist/parse.js:14:23)\n    at module.exports (/Users/trungs_macos/Desktop/Workspace/Laravel_8/laravel/node_modules/vue-loader/lib/index.js:67:22)");
+throw new Error("Module build failed (from ./node_modules/vue-loader/lib/index.js):\nTypeError: Cannot read properties of undefined (reading 'parseComponent')\n    at parse (/Users/trungs_macos/Desktop/Workspace/Laravel_8/PHP_Lavarel/node_modules/@vue/component-compiler-utils/dist/parse.js:14:23)\n    at module.exports (/Users/trungs_macos/Desktop/Workspace/Laravel_8/PHP_Lavarel/node_modules/vue-loader/lib/index.js:67:22)");
 
 /***/ }),
 
@@ -48625,8 +48625,8 @@ throw new Error("Module build failed (from ./node_modules/vue-loader/lib/index.j
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/trungs_macos/Desktop/Workspace/Laravel_8/laravel/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/trungs_macos/Desktop/Workspace/Laravel_8/laravel/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/trungs_macos/Desktop/Workspace/Laravel_8/PHP_Lavarel/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/trungs_macos/Desktop/Workspace/Laravel_8/PHP_Lavarel/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
