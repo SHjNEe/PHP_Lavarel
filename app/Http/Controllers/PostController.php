@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\BlogPost;
 use Illuminate\Http\Request;
 use App\Http\Requests\StorePost;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -27,6 +28,12 @@ class PostController extends Controller
      */
     public function show($id)
     {
+        // DB::connection()->enableQueryLog();
+        // // $posts = BlogPost::all();
+        // $posts = BlogPost::with('comments')->get();
+
+
+        // dd(DB::getQueryLog());
         return view('posts.show', ['post' => BlogPost::findOrFail($id)]);
     }
 
@@ -40,7 +47,7 @@ class PostController extends Controller
         $validatedData = $request->validated();
         $blogPost = BlogPost::create($validatedData);
         $request->session()->flash('status', 'Blog post was created!');
-        
+
         return redirect()->route('posts.show', ['post' => $blogPost->id]);
     }
 
@@ -62,7 +69,8 @@ class PostController extends Controller
         return redirect()->route('posts.show', ['post' => $post->id]);
     }
 
-    public function destroy(Request $request, $id) {
+    public function destroy(Request $request, $id)
+    {
         $post = BlogPost::findOrFail($id);
         $post->delete();
 
