@@ -10,6 +10,10 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->only(['store', 'edit', 'update', 'destroy']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -32,7 +36,7 @@ class PostController extends Controller
         // comments_count
 
         return view(
-            'posts.index', 
+            'posts.index',
             ['posts' => BlogPost::withCount('comments')->get()]
         );
     }

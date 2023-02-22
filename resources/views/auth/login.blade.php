@@ -1,20 +1,7 @@
 @extends('layout')
 @section('content')
-  <form method="POST" action="{{ route('register') }}">
+  <form method="POST" action="{{ route('login') }}">
     @csrf
-
-    <div class="form-group">
-      <label>Name</label>
-      <input name="name" value="{{ old('name') }}" required 
-      class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}">
-      @if($errors->has('name'))
-        <span class="invalid-feedback">
-          <strong>{{ $errors->first('name') }}
-            </strong>
-        </span>
-      @endif
-    </div>
-
     <div class="form-group">
       <label>E-mail</label>
       <input name="email" value="{{ old('email') }}" required 
@@ -39,14 +26,12 @@
         </span>
       @endif
     </div>
-
     <div class="form-group">
-      <label>Retyped Password</label>
-      <input name="password_confirmation" required 
-      type="password"
-      class="form-control">
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" name="remember" value="{{ old('remember') ? 'checked' : '' }}">
+            <label for="" class="form-check-label" for='remember'>Remember me</label>
+        </div>
     </div>
-
     <button type="submit" class="btn btn-primary btn-block">Register!</button>
   </form>
 @endsection('content')
