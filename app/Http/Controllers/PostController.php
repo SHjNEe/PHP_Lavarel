@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\BlogPost;
-use Illuminate\Http\Request;
 use App\Http\Requests\StorePost;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+
+// use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -16,7 +17,24 @@ class PostController extends Controller
      */
     public function index()
     {
-        return view('posts.index', ['posts' => BlogPost::all()]);
+        // DB::connection()->enableQueryLog();
+
+        // $posts = BlogPost::with('comments')->get();
+
+        // foreach ($posts as $post) {
+        //     foreach ($post->comments as $comment) {
+        //         echo $comment->content;
+        //     }
+        // }
+
+        // dd(DB::getQueryLog());
+
+        // comments_count
+
+        return view(
+            'posts.index', 
+            ['posts' => BlogPost::withCount('comments')->get()]
+        );
     }
 
     /**
@@ -28,13 +46,9 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        // DB::connection()->enableQueryLog();
-        // // $posts = BlogPost::all();
-        // $posts = BlogPost::with('comments')->get();
-
-
-        // dd(DB::getQueryLog());
-        return view('posts.show', ['post' => BlogPost::findOrFail($id)]);
+        return view('posts.show', [
+            'post' => BlogPost::with('comments')->findOrFail($id)
+        ]);
     }
 
     public function create()

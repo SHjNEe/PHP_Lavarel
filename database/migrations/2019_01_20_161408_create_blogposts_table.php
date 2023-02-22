@@ -13,7 +13,7 @@ class CreateBlogpostsTable extends Migration
      */
     public function up()
     {
-        Schema::create('blog_posts', function (Blueprint $table) {
+        Schema::create('blogposts', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
         });

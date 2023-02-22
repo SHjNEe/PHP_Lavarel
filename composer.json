@@ -24,10 +24,7 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true,
-        "allow-plugins": {
-            "kylekatarnls/update-helper": true
-        }
+        "sort-packages": true
     },
     "extra": {
         "laravel": {
