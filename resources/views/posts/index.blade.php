@@ -16,12 +16,13 @@
             @else
                 <p>No comments yet!</p>
             @endif
-
+            @can('update', $post)
             <a href="{{ route('posts.edit', ['post' => $post->id]) }}"
                 class="btn btn-primary">
                 Edit
             </a>
-
+            @endcan
+            @can('delete', $post)
             <form method="POST" class="fm-inline"
                 action="{{ route('posts.destroy', ['post' => $post->id]) }}">
                 @csrf
@@ -29,6 +30,11 @@
 
                 <input type="submit" value="Delete!" class="btn btn-primary"/>
             </form>
+            @endcan
+            @cannot('delete')
+                <p>You cant delete this post</p>
+            @endcannot
+
         </p>
     @empty
         <p>No blog posts yet!</p>
