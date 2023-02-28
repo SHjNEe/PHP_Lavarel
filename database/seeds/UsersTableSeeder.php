@@ -11,7 +11,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        $usersCount = $this->command->ask('How many users would you like?', 20);
+        $usersCount = max((int)$this->command->ask('How many users would you like?', 20), 1);
         factory(App\User::class)->states('john-doe')->create();
         factory(App\User::class, $usersCount)->create();
     }

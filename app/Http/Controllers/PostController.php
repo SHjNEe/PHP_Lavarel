@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    public function __construct() 
+    public function __construct()
     {
         $this->middleware('auth')
             ->only(['create', 'store', 'edit', 'update', 'destroy']);
@@ -38,7 +38,7 @@ class PostController extends Controller
         // comments_count
 
         return view(
-            'posts.index', 
+            'posts.index',
             ['posts' => BlogPost::withCount('comments')->get()]
         );
     }
@@ -91,6 +91,9 @@ class PostController extends Controller
 
     public function destroy(Request $request, $id)
     {
+        // $posts = BlogPost::withTrashed()->get()->pluck('id');
+        // $posts = BlogPost::onlyTrashed()->get()->pluck('id');
+        // dd($posts);
         $post = BlogPost::findOrFail($id);
         $post->delete();
 
