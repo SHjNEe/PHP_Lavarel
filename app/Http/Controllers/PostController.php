@@ -41,7 +41,7 @@ class PostController extends Controller
 
         return view(
             'posts.index',
-            ['posts' => BlogPost::withCount('comments')->get()]
+            ['posts' => BlogPost::lastest()->withCount('comments')->get()]
         );
     }
 
@@ -55,7 +55,9 @@ class PostController extends Controller
     public function show($id)
     {
         return view('posts.show', [
-            'post' => BlogPost::with('comments')->findOrFail($id)
+            'post' => BlogPost::with(['comments' => function ($query) {
+                return $query->latest();
+            }])->findOrFail($id)
         ]);
     }
 
@@ -69,6 +71,7 @@ class PostController extends Controller
     public function store(StorePost $request)
     {
         $validatedData = $request->validated();
+        $validatedData['user_id'] = $request->user()->id;
         $blogPost = BlogPost::create($validatedData);
         $request->session()->flash('status', 'Blog post was created!');
 

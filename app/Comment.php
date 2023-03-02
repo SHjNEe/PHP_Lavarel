@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -14,4 +15,10 @@ class Comment extends Model
         // return $this->belongsTo('App\BlogPost', 'post_id', 'blog_post_id');
         return $this->belongsTo('App\BlogPost');
     }
+
+    public function scopeLastest(Builder $builder)
+    {
+        $builder->orderBy(static::CREATED_AT, 'desc');
+    }
+
 }
