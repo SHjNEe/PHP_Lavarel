@@ -5,11 +5,17 @@ namespace App\Http\Controllers;
 use App\BlogPost;
 use App\Http\Requests\StorePost;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
-
 
 // use Illuminate\Support\Facades\DB;
 
+// [
+//     'show' => 'view',
+//     'create' => 'create',
+//     'store' => 'create',
+//     'edit' => 'update',
+//     'update' => 'update',
+//     'destroy' => 'delete',
+// ]
 class PostController extends Controller
 {
     public function __construct()
@@ -41,7 +47,10 @@ class PostController extends Controller
 
         return view(
             'posts.index',
-            ['posts' => BlogPost::lastest()->withCount('comments')->get()]
+            [
+                'posts' => BlogPost::latest()->withCount('comments')->get(),
+                'mostCommented' => BlogPost::mostCommented()->take(5)->get(),
+            ]
         );
     }
 
@@ -54,17 +63,20 @@ class PostController extends Controller
      */
     public function show($id)
     {
+        // return view('posts.show', [
+        //     'post' => BlogPost::with(['comments' => function ($query) {
+        //         return $query->latest();
+        //     }])->findOrFail($id),
+        // ]);
         return view('posts.show', [
-            'post' => BlogPost::with(['comments' => function ($query) {
-                return $query->latest();
-            }])->findOrFail($id)
+            'post' => BlogPost::with('comments')->findOrFail($id),
+            'mostCommented' => BlogPost::mostCommented()->take(5)->get()
         ]);
     }
 
     public function create()
     {
         // $this->authorize('posts.create');
-
         return view('posts.create');
     }
 
@@ -81,9 +93,6 @@ class PostController extends Controller
     public function edit($id)
     {
         $post = BlogPost::findOrFail($id);
-        // if (Gate::denies('update-post', $post)) {
-        //     abort(403, "You can't edit this blog post !!");
-        // }
         $this->authorize($post);
 
         return view('posts.edit', ['post' => $post]);
@@ -92,10 +101,12 @@ class PostController extends Controller
     public function update(StorePost $request, $id)
     {
         $post = BlogPost::findOrFail($id);
+
         // if (Gate::denies('update-post', $post)) {
-        //     abort(403, "You can't edit this blog post !!");
+        //     abort(403, "You can't edit this blog post!");
         // }
         $this->authorize($post);
+
         $validatedData = $request->validated();
 
         $post->fill($validatedData);
@@ -107,14 +118,13 @@ class PostController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        // $posts = BlogPost::withTrashed()->get()->pluck('id');
-        // $posts = BlogPost::onlyTrashed()->get()->pluck('id');
-        // dd($posts);
         $post = BlogPost::findOrFail($id);
+
         // if (Gate::denies('delete-post', $post)) {
-        //     abort(403, "You can't delete this blog post !!");
+        //     abort(403, "You can't delete this blog post!");
         // }
         $this->authorize($post);
+
         $post->delete();
 
         // BlogPost::destroy($id);

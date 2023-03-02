@@ -2,13 +2,14 @@
 
 namespace App;
 
-use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Comment extends Model
 {
     use SoftDeletes;
+
     // blog_post_id
     public function blogPost()
     {
@@ -16,9 +17,15 @@ class Comment extends Model
         return $this->belongsTo('App\BlogPost');
     }
 
-    public function scopeLastest(Builder $builder)
+    public function scopeLatest(Builder $query)
     {
-        $builder->orderBy(static::CREATED_AT, 'desc');
+        return $query->orderBy(static::CREATED_AT, 'desc');
     }
 
+    public static function boot()
+    {
+        parent::boot();
+
+        // static::addGlobalScope(new LatestScope);
+    }
 }

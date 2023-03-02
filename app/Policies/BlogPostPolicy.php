@@ -19,6 +19,7 @@ class BlogPostPolicy
      */
     public function view(User $user, BlogPost $blogPost)
     {
+        //
     }
 
     /**
@@ -29,7 +30,7 @@ class BlogPostPolicy
      */
     public function create(User $user)
     {
-        // return true;
+        //
     }
 
     /**
