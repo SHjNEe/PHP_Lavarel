@@ -27,7 +27,7 @@ $factory->define(App\User::class, function (Faker $faker) {
 $factory->state(App\User::class, 'john-doe', function (Faker $faker) {
     return [
         'name' => 'John Doe',
-        'email' => 'john@gmail.com',
+        'email' => 'john@laravel.test',
         'is_admin' => true
     ];
 });

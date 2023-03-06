@@ -5,6 +5,6 @@ use Faker\Generator as Faker;
 $factory->define(App\Comment::class, function (Faker $faker) {
     return [
         'content' => $faker->text,
-        'created_at' => $faker->dateTimeBetween(now()->subMonth(3), now())
+        'created_at' => $faker->dateTimeBetween('-3 months'),
     ];
 });
