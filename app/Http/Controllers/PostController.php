@@ -31,25 +31,11 @@ class PostController extends Controller
      */
     public function index()
     {
-        $mostCommented = Cache::tags(['blog-post'])->remember('mostCommented', 60, function () {
-            return BlogPost::mostCommented()->take(5)->get();
-        });
-
-        $mostActive = Cache::remember('mostActive', 60, function () {
-            return User::withMostBlogPosts()->take(5)->get();
-        });
-
-        $mostActiveLastMonth = Cache::remember('mostActiveLastMonth', 60, function () {
-            return User::withMostBlogPostsLastMonth()->take(5)->get();
-        });
-
         return view(
             'posts.index',
             [
-                'posts' => BlogPost::latest()->withCount('comments')->with('user')->with('tags')->get(),
-                'mostCommented' => $mostCommented,
-                'mostActive' => $mostActive,
-                'mostActiveLastMonth' => $mostActiveLastMonth,
+                'posts' => BlogPost::latest()->withCount('comments')
+                    ->with('user')->with('tags')->get(),
             ]
         );
     }
@@ -68,8 +54,8 @@ class PostController extends Controller
         //         return $query->latest();
         //     }])->findOrFail($id),
         // ]);
-        $blogPost = Cache::tags(['blog-post'])->remember("blog-post-{$id}", 60, function () use ($id) {
-            return BlogPost::with('comments')->with('tags')->findOrFail($id);
+        $blogPost = Cache::tags(['blog-post'])->remember("blog-post-{$id}", 60, function() use($id) {
+            return BlogPost::with('comments')->with('tags')->with('user')->findOrFail($id);
         });
 
         $sessionId = session()->getId();
@@ -89,7 +75,7 @@ class PostController extends Controller
             }
         }
 
-        if (
+        if(
             !array_key_exists($sessionId, $users)
             || $now->diffInMinutes($users[$sessionId]) >= 1
         ) {
@@ -104,7 +90,7 @@ class PostController extends Controller
         } else {
             Cache::tags(['blog-post'])->increment($counterKey, $diffrence);
         }
-
+        
         $counter = Cache::tags(['blog-post'])->get($counterKey);
 
         return view('posts.show', [

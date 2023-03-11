@@ -15,9 +15,8 @@
     @updated(['date' => $post->updated_at])
         Updated
     @endupdated
-    @tags(['tags' => $post->tags])
-    @endtags
 
+    @tags(['tags' => $post->tags])@endtags
 
     <p>Currently read by {{ $counter }} people</p>
 
