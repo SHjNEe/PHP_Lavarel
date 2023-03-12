@@ -13,23 +13,21 @@ class CreateBlogPostTagTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('blog_post_tag')) {
-            Schema::create('blog_post_tag', function (Blueprint $table) {
-                $table->increments('id');
+        Schema::create('blog_post_tag', function (Blueprint $table) {
+            $table->increments('id');
 
-                $table->unsignedInteger('blog_post_id')->index();
-                $table->foreign('blog_post_id')->references('id')
-                    ->on('blog_posts')
-                    ->onDelete('cascade');
+            $table->unsignedInteger('blog_post_id')->index();
+            $table->foreign('blog_post_id')->references('id')
+                ->on('blog_posts')
+                ->onDelete('cascade');
 
-                $table->unsignedInteger('tag_id')->index();
-                $table->foreign('tag_id')->references('id')
-                    ->on('tags')
-                    ->onDelete('cascade');
+            $table->unsignedInteger('tag_id')->index();
+            $table->foreign('tag_id')->references('id')
+                ->on('tags')
+                ->onDelete('cascade');    
 
-                $table->timestamps();
-            });
-        }
+            $table->timestamps();
+        });
     }
 
     /**

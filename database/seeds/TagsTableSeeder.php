@@ -1,7 +1,7 @@
 <?php
 
-use App\Tag;
 use Illuminate\Database\Seeder;
+use App\Tag;
 
 class TagsTableSeeder extends Seeder
 {
@@ -12,7 +12,7 @@ class TagsTableSeeder extends Seeder
      */
     public function run()
     {
-        $tags = collect(['Sience', 'Sport', 'Politics', 'Entartaiment', 'Economy']);
+        $tags = collect(['Science', 'Sport', 'Politics', 'Entartainment', 'Economy']);
 
         $tags->each(function ($tagName) {
             $tag = new Tag();

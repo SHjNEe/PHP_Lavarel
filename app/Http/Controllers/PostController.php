@@ -34,8 +34,7 @@ class PostController extends Controller
         return view(
             'posts.index',
             [
-                'posts' => BlogPost::latest()->withCount('comments')
-                    ->with('user')->with('tags')->get(),
+                'posts' => BlogPost::lastestWithRelations()->get(),
             ]
         );
     }
@@ -54,8 +53,9 @@ class PostController extends Controller
         //         return $query->latest();
         //     }])->findOrFail($id),
         // ]);
-        $blogPost = Cache::tags(['blog-post'])->remember("blog-post-{$id}", 60, function() use($id) {
-            return BlogPost::with('comments')->with('tags')->with('user')->findOrFail($id);
+        $blogPost = Cache::tags(['blog-post'])->remember("blog-post-{$id}", 60, function () use ($id) {
+            return BlogPost::with('comments', 'tags', 'user', 'comments.user')
+                ->findOrFail($id);
         });
 
         $sessionId = session()->getId();
@@ -75,7 +75,7 @@ class PostController extends Controller
             }
         }
 
-        if(
+        if (
             !array_key_exists($sessionId, $users)
             || $now->diffInMinutes($users[$sessionId]) >= 1
         ) {
@@ -90,7 +90,7 @@ class PostController extends Controller
         } else {
             Cache::tags(['blog-post'])->increment($counterKey, $diffrence);
         }
-        
+
         $counter = Cache::tags(['blog-post'])->get($counterKey);
 
         return view('posts.show', [
