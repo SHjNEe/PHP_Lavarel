@@ -20,10 +20,6 @@ class BlogPost extends Model
     {
         return $this->hasMany('App\Comment')->latest();
     }
-    public function image()
-    {
-        return $this->hasOne('App\Image');
-    }
 
     public function user()
     {
@@ -33,6 +29,11 @@ class BlogPost extends Model
     public function tags()
     {
         return $this->belongsToMany('App\Tag')->withTimestamps();
+    }
+
+    public function image()
+    {
+        return $this->hasOne('App\Image');
     }
 
     public function scopeLatest(Builder $query)
@@ -45,10 +46,13 @@ class BlogPost extends Model
         // comments_count
         return $query->withCount('comments')->orderBy('comments_count', 'desc');
     }
-    public function scopeLastestWithRelations(Builder $query)
+
+    public function scopeLatestWithRelations(Builder $query)
     {
-        return $query->latest()->withCount('comments')
-            ->with('user')->with('tags');
+        return $query->latest()
+            ->withCount('comments')
+            ->with('user')
+            ->with('tags');
     }
 
     public static function boot()

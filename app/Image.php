@@ -4,7 +4,6 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Image extends Model
 {
@@ -12,8 +11,9 @@ class Image extends Model
 
     public function blogPost()
     {
-        return $this->BelongsTo('App\BlogPost');
+        return $this->belongsTo('App\BlogPost');
     }
+
     public function url()
     {
         return Storage::url($this->path);

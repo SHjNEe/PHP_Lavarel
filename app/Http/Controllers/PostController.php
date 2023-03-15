@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Image;
 use App\BlogPost;
-use Illuminate\Http\Request;
 use App\Http\Requests\StorePost;
+use Illuminate\Http\Request;
+use App\User;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use App\Image;
 
 // [
 //     'show' => 'view',
@@ -36,7 +36,7 @@ class PostController extends Controller
         return view(
             'posts.index',
             [
-                'posts' => BlogPost::lastestWithRelations()->get(),
+                'posts' => BlogPost::latestWithRelations()->get(),
             ]
         );
     }
@@ -55,7 +55,7 @@ class PostController extends Controller
         //         return $query->latest();
         //     }])->findOrFail($id),
         // ]);
-        $blogPost = Cache::tags(['blog-post'])->remember("blog-post-{$id}", 60, function () use ($id) {
+        $blogPost = Cache::tags(['blog-post'])->remember("blog-post-{$id}", 60, function() use($id) {
             return BlogPost::with('comments', 'tags', 'user', 'comments.user')
                 ->findOrFail($id);
         });
@@ -77,7 +77,7 @@ class PostController extends Controller
             }
         }
 
-        if (
+        if(
             !array_key_exists($sessionId, $users)
             || $now->diffInMinutes($users[$sessionId]) >= 1
         ) {
@@ -92,7 +92,7 @@ class PostController extends Controller
         } else {
             Cache::tags(['blog-post'])->increment($counterKey, $diffrence);
         }
-
+        
         $counter = Cache::tags(['blog-post'])->get($counterKey);
 
         return view('posts.show', [
@@ -115,18 +115,11 @@ class PostController extends Controller
 
         if ($request->hasFile('thumbnail')) {
             $path = $request->file('thumbnail')->store('thumbnails');
-            $blogPost->image()->save(Image::create(['path' => $path]));
-            // dump($file);
-            // dump($file->getClientMimeType());
-            // dump($file->getClientOriginalExtension());
-            // $file->store('thumbnails');
+            $blogPost->image()->save(
+                Image::create(['path' => $path])
+            );
+        }
 
-            // $name1 = $file->storeAs('thumbnails', $blogPost->id . '.' . $file->guessExtension());
-            // $name2 = Storage::disk('local')->putFileAs('thumbnails', $file, $blogPost->id . '.' . $file->guessExtension());
-            // dump(Storage::url($name1));
-            // dump(Storage::disk('local')->url($name2));
-            // dump(Storage::url($name2));
-        };
         $request->session()->flash('status', 'Blog post was created!');
 
         return redirect()->route('posts.show', ['post' => $blogPost->id]);
@@ -152,6 +145,21 @@ class PostController extends Controller
         $validatedData = $request->validated();
 
         $post->fill($validatedData);
+
+        if ($request->hasFile('thumbnail')) {
+            $path = $request->file('thumbnail')->store('thumbnails');
+
+            if ($post->image) {
+                Storage::delete($post->image->path);
+                $post->image->path = $path;
+                $post->image->save();
+            } else {
+                $post->image()->save(
+                    Image::create(['path' => $path])
+                );
+            }
+        }
+
         $post->save();
         $request->session()->flash('status', 'Blog post was updated!');
 
