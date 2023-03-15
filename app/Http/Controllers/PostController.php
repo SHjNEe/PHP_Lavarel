@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\BlogPost;
-use App\Http\Requests\StorePost;
-use Illuminate\Http\Request;
 use App\User;
+use App\Image;
+use App\BlogPost;
+use Illuminate\Http\Request;
+use App\Http\Requests\StorePost;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 // [
 //     'show' => 'view',
@@ -110,6 +112,21 @@ class PostController extends Controller
         $validatedData = $request->validated();
         $validatedData['user_id'] = $request->user()->id;
         $blogPost = BlogPost::create($validatedData);
+
+        if ($request->hasFile('thumbnail')) {
+            $path = $request->file('thumbnail')->store('thumbnails');
+            $blogPost->image()->save(Image::create(['path' => $path]));
+            // dump($file);
+            // dump($file->getClientMimeType());
+            // dump($file->getClientOriginalExtension());
+            // $file->store('thumbnails');
+
+            // $name1 = $file->storeAs('thumbnails', $blogPost->id . '.' . $file->guessExtension());
+            // $name2 = Storage::disk('local')->putFileAs('thumbnails', $file, $blogPost->id . '.' . $file->guessExtension());
+            // dump(Storage::url($name1));
+            // dump(Storage::disk('local')->url($name2));
+            // dump(Storage::url($name2));
+        };
         $request->session()->flash('status', 'Blog post was created!');
 
         return redirect()->route('posts.show', ['post' => $blogPost->id]);

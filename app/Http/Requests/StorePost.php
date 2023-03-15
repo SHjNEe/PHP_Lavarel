@@ -25,7 +25,7 @@ class StorePost extends FormRequest
     {
         return [
             'title' => 'bail|min:5|required|max:100',
-            'content' => 'required|min:10'
+            'content' => 'required|min:10',
         ];
     }
 }

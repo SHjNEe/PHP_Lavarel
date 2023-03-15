@@ -20,6 +20,10 @@ class BlogPost extends Model
     {
         return $this->hasMany('App\Comment')->latest();
     }
+    public function image()
+    {
+        return $this->hasOne('App\Image');
+    }
 
     public function user()
     {
