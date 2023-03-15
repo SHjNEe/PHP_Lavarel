@@ -9,5 +9,9 @@
     <input type="text" name="content" class="form-control"
         value="{{ old('content', $post->content ?? null) }}"/>
 </div>
-
-@errors @enderrors
+<div class="form-group">
+    <label>Thumbnail</label>
+    <input type="file" name="image" class="form-control"/>
+</div>
+@errors 
+@enderrors
