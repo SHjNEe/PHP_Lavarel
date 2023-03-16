@@ -1,12 +1,11 @@
-
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url("https://fonts.googleapis.com/css?family=Nunito");
 
 // Variables
-@import 'variables';
+@import "variables";
 
 // Bootstrap
-@import '~bootstrap/scss/bootstrap';
+@import "~bootstrap/scss/bootstrap";
 
 .navbar-laravel {
   background-color: #fff;
@@ -18,5 +17,9 @@
 }
 
 .badge-lg {
-  font-size: 1.0rem;
+  font-size: 1rem;
+}
+.avatar {
+  width: 128px;
+  height: 128px;
 }
