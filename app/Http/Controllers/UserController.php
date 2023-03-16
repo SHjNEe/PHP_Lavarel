@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Image;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -75,7 +77,25 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        dd($user);
+
+
+        if ($request->hasFile('avatar')) {
+            $path = $request->file('avatar')->store('avatars');
+            if ($user->image) {
+                Storage::delete($user->image->path);
+                $user->image->path = $path;
+                $user->image->save();
+            } else {
+                $user->image()->save(
+                    Image::make(['path' => $path])
+                );
+            }
+        }
+
+        $user->save();
+        // $request->session()->flash('status', 'User was updated!');
+
+        return redirect()->route('users.show', ['user' => $user->id])->withStatus('User was updated!');
     }
 
     /**
