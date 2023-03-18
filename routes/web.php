@@ -14,7 +14,7 @@
 Route::get('/', 'HomeController@home')
   ->name('home')
   // ->middleware('auth')
-;
+  ;
 Route::get('/contact', 'HomeController@contact')->name('contact');
 Route::get('/secret', 'HomeController@secret')
   ->name('secret')

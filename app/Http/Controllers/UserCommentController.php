@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use Illuminate\Http\Request;
 use App\Http\Requests\StoreComment;
 
 class UserCommentController extends Controller
@@ -15,11 +14,12 @@ class UserCommentController extends Controller
 
     public function store(User $user, StoreComment $request)
     {
-        // Comment::create()
         $user->commentsOn()->create([
             'content' => $request->input('content'),
             'user_id' => $request->user()->id
         ]);
-        return redirect()->back()->withStatus('Comment was created!');
+
+        return redirect()->back()
+            ->withStatus('Comment was created!');
     }
 }

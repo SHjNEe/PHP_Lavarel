@@ -48614,7 +48614,7 @@ throw new Error("Module build failed (from ./node_modules/vue-loader/lib/index.j
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+throw new Error("Module build failed (from ./node_modules/css-loader/index.js):\nModuleBuildError: Module build failed (from ./node_modules/sass-loader/lib/loader.js):\nError: ENOENT: no such file or directory, open '/Users/trungs_macos/Desktop/Workspace/Laravel_8/PHP_Lavarel/resources/sass/app.scss'\n    at /Users/trungs_macos/Desktop/Workspace/Laravel_8/PHP_Lavarel/node_modules/webpack/lib/NormalModule.js:301:20\n    at /Users/trungs_macos/Desktop/Workspace/Laravel_8/PHP_Lavarel/node_modules/loader-runner/lib/LoaderRunner.js:367:11\n    at /Users/trungs_macos/Desktop/Workspace/Laravel_8/PHP_Lavarel/node_modules/loader-runner/lib/LoaderRunner.js:203:19\n    at /Users/trungs_macos/Desktop/Workspace/Laravel_8/PHP_Lavarel/node_modules/enhanced-resolve/lib/CachedInputFileSystem.js:73:15\n    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)");
 
 /***/ }),
 
