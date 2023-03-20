@@ -5,11 +5,23 @@
 </style>
 
 <p>Hi {{ $comment->commentable->user->name }}</p>
-<p>Some one has commented on your blog post.</p>
-<a href="{{ route('posts.show', ['post' => $comment->commentable->id]) }}"> {{ $comment->commentable->title }}</a>
+
+<p>
+    Someone has commented on your blog post
+    <a href="{{ route('posts.show', ['post' => $comment->commentable->id]) }}">
+        {{ $comment->commentable->title }}
+    </a>
+</p>
 
 <hr/>
 
 <p>
-    <a href="{{ route('users.show', ['user' => $comment->user->id]) }}">{{ $comment->user->name }}</a>
+    <img src="{{ $message->embed($comment->user->image->url()) }}"/>
+    <a href="{{ route('users.show', ['user' => $comment->user->id]) }}">
+        {{ $comment->user->name }}
+    </a> said:
+</p>
+
+<p>
+    "{{ $comment->content }}"
 </p>

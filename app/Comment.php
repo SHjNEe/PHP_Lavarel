@@ -2,16 +2,15 @@
 
 namespace App;
 
-use App\Traits\Taggable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Cache;
+use App\Traits\Taggable;
 
 class Comment extends Model
 {
-    use SoftDeletes;
-    use Taggable;
+    use SoftDeletes, Taggable;
 
     protected $fillable = ['user_id', 'content'];
 
@@ -19,12 +18,8 @@ class Comment extends Model
     {
         return $this->morphTo();
     }
-    // public function tags()
-    // {
-    //     return $this->morphToMany('App\Tag', 'taggable')->withTimestamps();
-    // }
 
-    public function user() 
+    public function user()
     {
         return $this->belongsTo('App\User');
     }

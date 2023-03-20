@@ -4,9 +4,7 @@ namespace App\Traits;
 
 use App\Tag;
 
-
-trait Taggable
-{
+trait Taggable {
     protected static function bootTaggable()
     {
         static::updating(function ($model) {
