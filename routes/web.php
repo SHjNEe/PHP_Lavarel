@@ -1,7 +1,5 @@
 <?php
 
-use App\Comment;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,7 +14,7 @@ use App\Comment;
 Route::get('/', 'HomeController@home')
   ->name('home')
   // ->middleware('auth')
-;
+  ;
 Route::get('/contact', 'HomeController@contact')->name('contact');
 Route::get('/secret', 'HomeController@secret')
   ->name('secret')
@@ -27,8 +25,10 @@ Route::get('/posts/tag/{tag}', 'PostTagController@index')->name('posts.tags.inde
 Route::resource('posts.comments', 'PostCommentController')->only(['store']);
 Route::resource('users.comments', 'UserCommentController')->only(['store']);
 Route::resource('users', 'UserController')->only(['show', 'edit', 'update']);
+
 Route::get('mailable', function () {
-  $comment = App\Comment::find(1);
-  return new App\Mail\CommentPostedMarkdown($comment);
+    $comment = App\Comment::find(1);
+    return new App\Mail\CommentPostedMarkdown($comment);
 });
+
 Auth::routes();
