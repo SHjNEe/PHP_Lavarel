@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\BlogPost;
-use App\Http\Requests\StorePost;
-use Illuminate\Http\Request;
 use App\User;
+use App\Image;
+use App\BlogPost;
+use Illuminate\Http\Request;
+use App\Events\BlogPostPosted;
+use App\Http\Requests\StorePost;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
-use App\Image;
 
 // [
 //     'show' => 'view',
@@ -55,7 +56,7 @@ class PostController extends Controller
         //         return $query->latest();
         //     }])->findOrFail($id),
         // ]);
-        $blogPost = Cache::tags(['blog-post'])->remember("blog-post-{$id}", 60, function() use($id) {
+        $blogPost = Cache::tags(['blog-post'])->remember("blog-post-{$id}", 60, function () use ($id) {
             return BlogPost::with('comments', 'tags', 'user', 'comments.user')
                 ->findOrFail($id);
         });
@@ -77,7 +78,7 @@ class PostController extends Controller
             }
         }
 
-        if(
+        if (
             !array_key_exists($sessionId, $users)
             || $now->diffInMinutes($users[$sessionId]) >= 1
         ) {
@@ -92,7 +93,7 @@ class PostController extends Controller
         } else {
             Cache::tags(['blog-post'])->increment($counterKey, $diffrence);
         }
-        
+
         $counter = Cache::tags(['blog-post'])->get($counterKey);
 
         return view('posts.show', [
@@ -119,6 +120,8 @@ class PostController extends Controller
                 Image::make(['path' => $path])
             );
         }
+
+        event(new BlogPostPosted($blogPost));
 
         $request->session()->flash('status', 'Blog post was created!');
 

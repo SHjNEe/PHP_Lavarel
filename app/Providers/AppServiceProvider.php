@@ -2,14 +2,14 @@
 
 namespace App\Providers;
 
-use App\BlogPost;
-use App\Comment;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use App\Http\ViewComposers\ActivityComposer;
-use App\Observers\BlogPostObserver;
-use App\Observers\CommentObserver;
 use Illuminate\Support\Facades\Schema;
+use App\BlogPost;
+use App\Observers\BlogPostObserver;
+use App\Comment;
+use App\Observers\CommentObserver;
 
 class AppServiceProvider extends ServiceProvider
 {

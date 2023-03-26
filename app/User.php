@@ -58,7 +58,7 @@ class User extends Authenticatable
         return $query->withCount(['blogPosts' => function (Builder $query) {
             $query->whereBetween(static::CREATED_AT, [now()->subMonths(1), now()]);
         }])->has('blogPosts', '>=', 2)
-           ->orderBy('blog_posts_count', 'desc');
+            ->orderBy('blog_posts_count', 'desc');
     }
 
     public function scopeThatHasCommentedOnPost(Builder $query, BlogPost $post)
@@ -67,5 +67,10 @@ class User extends Authenticatable
             return $query->where('commentable_id', '=', $post->id)
                 ->where('commentable_type', '=', BlogPost::class);
         });
+    }
+
+    public function scopeThisIsAnAdmin(Builder $query)
+    {
+        return $query->where('is_admin', true);
     }
 }
