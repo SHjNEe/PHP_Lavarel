@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Events\CommentPosted;
+use App\Listeners\CacheSubcriber;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use App\Listeners\NotifyUsersAboutComment;
@@ -29,6 +30,9 @@ class EventServiceProvider extends ServiceProvider
         ]
     ];
 
+    protected $subscribe = [
+        CacheSubcriber::class
+    ];
     /**
      * Register any events for your application.
      *
