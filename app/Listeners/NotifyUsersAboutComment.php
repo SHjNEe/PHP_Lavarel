@@ -19,8 +19,9 @@ class NotifyUsersAboutComment
      */
     public function handle(CommentPosted $event)
     {
+        // dd('I was called in response to an event');
         ThrottledMail::dispatch(
-            new CommentPostedMarkdown($event->comment),
+            new CommentPostedMarkdown($event->comment), 
             $event->comment->commentable->user
         )->onQueue('low');
         NotifyUsersPostWasCommented::dispatch($event->comment)

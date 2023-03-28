@@ -1,9 +1,7 @@
 @component('mail::message')
-# Test
+# Someone has posted a blog post
 
-@component('mail::button', ['url' => ''])
-Button Text
-@endcomponent
+Be sure to proof read it.
 
 Thanks,<br>
 {{ config('app.name') }}
