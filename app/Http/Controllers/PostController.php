@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Image;
 use App\BlogPost;
-use App\Services\Counter;
-use Illuminate\Http\Request;
-use App\Events\BlogPostPosted;
 use App\Http\Requests\StorePost;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use App\Image;
+use App\Events\BlogPostPosted;
+use App\Facades\CounterFacade;
 
 // [
 //     'show' => 'view',
@@ -21,13 +21,11 @@ use Illuminate\Support\Facades\Storage;
 // ]
 class PostController extends Controller
 {
-    private $counter;
-    public function __construct(Counter $counter)
+    public function __construct()
     {
         $this->middleware('auth')
             ->only(['create', 'store', 'edit', 'update', 'destroy']);
         // $this->middleware('locale');
-        $this->counter = $counter;
     }
 
     /**
@@ -54,22 +52,14 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        // return view('posts.show', [
-        //     'post' => BlogPost::with(['comments' => function ($query) {
-        //         return $query->latest();
-        //     }])->findOrFail($id),
-        // ]);
-        $blogPost = Cache::tags(['blog-post'])->remember("blog-post-{$id}", 60, function () use ($id) {
+        $blogPost = Cache::tags(['blog-post'])->remember("blog-post-{$id}", 60, function() use($id) {
             return BlogPost::with('comments', 'tags', 'user', 'comments.user')
                 ->findOrFail($id);
         });
 
-        // $counter = new Counter();
-        // $counter = resolve(Counter::class);
-
         return view('posts.show', [
             'post' => $blogPost,
-            'counter' => $this->counter->increment("blog-post-{$id}", ['blog_post']),
+            'counter' => CounterFacade::increment("blog-post-{$id}", ['blog-post']),
         ]);
     }
 
