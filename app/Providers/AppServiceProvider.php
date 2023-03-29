@@ -2,14 +2,15 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Blade;
-use App\Http\ViewComposers\ActivityComposer;
-use Illuminate\Support\Facades\Schema;
-use App\BlogPost;
-use App\Observers\BlogPostObserver;
 use App\Comment;
+use App\BlogPost;
+use App\Services\Counter;
 use App\Observers\CommentObserver;
+use App\Observers\BlogPostObserver;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\ServiceProvider;
+use App\Http\ViewComposers\ActivityComposer;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -34,6 +35,14 @@ class AppServiceProvider extends ServiceProvider
 
         BlogPost::observe(BlogPostObserver::class);
         Comment::observe(CommentObserver::class);
+
+        // $this->app->bind(Counter::class, function ($app) {
+        //     return new Counter(5);
+        // });
+        // $this->app->singleton(Counter::class, function ($app) {
+        //     return new Counter(env('COUNTER_TIMEOUT'));
+        // });
+        $this->app->when(Counter::class)->needs('$timeout')->give(env('COUNTER_TIMEOUT'));
     }
 
     /**
