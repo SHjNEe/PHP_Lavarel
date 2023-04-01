@@ -15,11 +15,15 @@ class PostCommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(BlogPost $post)
+    public function index(BlogPost $post, Request $request)
     {
+        $perPage = (int) $request->input('per_page') ?? 15;
         // return response()->json(['comments' => []]);
         return CommentsResource::collection(
-            $post->comments()->with('user')->get()
+            $post->comments()->with('user')->paginate($perPage)->appends([
+                // http://127.0.0.1:8000/api/v1/posts/1/comments?per_page=2&page=2
+                'per_page' => $perPage
+            ])
         );
     }
 
