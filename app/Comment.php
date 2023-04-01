@@ -12,6 +12,7 @@ class Comment extends Model
     use SoftDeletes, Taggable;
 
     protected $fillable = ['user_id', 'content'];
+    protected $hidden = ['deleted_at', 'created_at', 'updated_at', 'commentable_type', 'user_id'];
 
     public function commentable()
     {

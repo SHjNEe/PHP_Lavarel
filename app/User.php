@@ -23,6 +23,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name', 'email', 'password',
+
     ];
 
     /**
@@ -31,7 +32,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', "email_verified_at",
+        "created_at",
+        "updated_at"
     ];
 
     public function blogPosts()
@@ -64,7 +67,7 @@ class User extends Authenticatable
         return $query->withCount(['blogPosts' => function (Builder $query) {
             $query->whereBetween(static::CREATED_AT, [now()->subMonths(1), now()]);
         }])->has('blogPosts', '>=', 2)
-           ->orderBy('blog_posts_count', 'desc');
+            ->orderBy('blog_posts_count', 'desc');
     }
 
     public function scopeThatHasCommentedOnPost(Builder $query, BlogPost $post)
