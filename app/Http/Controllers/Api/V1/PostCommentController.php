@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\BlogPost;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Comments as CommentsResource;
+use App\Http\Resources\Comment as CommentsResource;
 
 
 class PostCommentController extends Controller
