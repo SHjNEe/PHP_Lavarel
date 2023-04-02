@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreComment;
 use App\BlogPost;
 use App\Events\CommentPosted;
-use App\Http\Resources\Comment as CommentsResource;
+use App\Http\Resources\Comment as CommentResource;
 
 class PostCommentController extends Controller
 {
@@ -16,11 +16,10 @@ class PostCommentController extends Controller
 
     public function index(BlogPost $post)
     {
-        // dump($post->comments);
-        // dump($post->comments->toArray());
-        // // dump($post->comments);
-        return CommentsResource::collection($post->comments()->with('user')->get());
-        // return new CommentsResource($post->comments()->with('user')->first());
+        // dump(is_array($post->comments));
+        // dump(get_class($post->comments));
+        // die;
+        return CommentResource::collection($post->comments()->with('user')->get());
         // return $post->comments()->with('user')->get();
     }
 

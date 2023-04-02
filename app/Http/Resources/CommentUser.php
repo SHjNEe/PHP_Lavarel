@@ -16,9 +16,9 @@ class CommentUser extends JsonResource
     public function toArray($request)
     {
         return [
-            'user_id' => $this->id,
+            'id' => $this->id,
             'name' => $this->name,
-            'email' => $this->when(false, $this->email),
+            'email' => $this->when(false, $this->email)
         ];
     }
 }
