@@ -12,8 +12,8 @@ use App\Comment;
 use App\Observers\CommentObserver;
 use App\Services\Counter;
 use App\Services\DummyCounter;
+use App\Http\Resources\Comment as CommentResource;
 use Illuminate\Http\Resources\Json\Resource;
-use App\Http\Resources\Comment as CommentsResource;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -51,7 +51,8 @@ class AppServiceProvider extends ServiceProvider
             'App\Contracts\CounterContract',
             Counter::class
         );
-        CommentsResource::withoutWrapping();
+
+        // CommentResource::withoutWrapping();
         Resource::withoutWrapping();
 
         // $this->app->bind(
